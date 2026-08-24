@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1a1c30">
+    <meta
+      name="description"
+      content="Play GODELBOW, a tiny basketball platformer made with TIC-80, and read the field manual."
+    >
+    <title>GODELBOW — Play</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="site.css">
+    <script src="site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#game">Skip to game</a>
+
+    <header class="hero page-width">
+      <div>
+        <p class="eyebrow">TIC-80 CARTRIDGE // 24 CHAMBERS</p>
+        <h1>GODELBOW</h1>
+      </div>
+      <p class="hero__line">Get the ball. Control the flight. Break the room.</p>
+    </header>
+
+    <main>
+      <section class="playground page-width" id="game" aria-labelledby="game-heading">
+        <div class="score-strip">
+          <div>
+            <span class="score-strip__label">Status</span>
+            <strong id="game-status" aria-live="polite">Loading cartridge…</strong>
+          </div>
+          <h2 id="game-heading">The ball is the weapon</h2>
+          <div class="score-strip__room" aria-label="Twenty-four playable rooms">
+            <span class="score-strip__label">Rooms</span>
+            <strong>24</strong>
+          </div>
+        </div>
+
+        <div class="game-stage" id="game-stage">
+          <iframe
+            id="game-frame"
+            src="game/index.html"
+            title="Play GODELBOW"
+            allow="fullscreen; autoplay"
+          ></iframe>
+        </div>
+
+        <div class="game-toolbar">
+          <div class="controls" aria-label="Game controls">
+            <span><kbd>←</kbd><kbd>→</kbd> Move / aim</span>
+            <span><kbd>Z</kbd> Jump / start</span>
+            <span><kbd>X</kbd> Action</span>
+            <span><kbd>A</kbd> Rooms</span>
+            <span><kbd>S</kbd> Hitboxes</span>
+          </div>
+          <div class="game-actions">
+            <button class="utility-button" id="focus-game" type="button">Focus game</button>
+            <button class="utility-button utility-button--accent" id="fullscreen-game" type="button">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <p class="play-note">Click the play icon, then press <kbd>Z</kbd> to enter Level 1.</p>
+      </section>
+
+      <div class="paper-tear" aria-hidden="true"></div>
+
+      <section class="manual" id="manual" aria-labelledby="manual-heading">
+        <div class="manual__inner page-width">
+          <header class="manual__header">
+            <p class="eyebrow eyebrow--ink">Player field document // Revision 24</p>
+            <h2 id="manual-heading">Retro game manual</h2>
+            <p>Everything the court refuses to explain.</p>
+          </header>
+
+          <article class="markdown-body" id="manual-content" aria-live="polite" aria-busy="true">
+            <p class="manual-state">Loading the field manual…</p>
+          </article>
+
+          <noscript>
+            <p class="manual-state">
+              JavaScript is required to display the manual here.
+              <a href="RETRO_MANUAL.md">Open the Markdown source.</a>
+            </p>
+          </noscript>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="page-width">GODELBOW // Built with TIC-80</div>
+    </footer>
+  </body>
+</html>
