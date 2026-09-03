@@ -109,8 +109,8 @@
       manualContent.setAttribute("aria-busy", "false");
       manualContent.innerHTML = `
         <p class="manual-state manual-state--error">
-          The manual could not be loaded (${escapeHtml(error.message)}).
-          <a href="RETRO_MANUAL.md">Open the Markdown source.</a>
+          Manual unavailable (${escapeHtml(error.message)}).
+          <a href="RETRO_MANUAL.md">Read manual</a>
         </p>
       `;
     }
@@ -118,14 +118,19 @@
 
   function focusGame() {
     gameFrame.contentWindow?.focus();
+    let needsPlay = false;
 
     try {
-      gameFrame.contentDocument?.getElementById("canvas")?.focus();
+      const frameDocument = gameFrame.contentDocument;
+      const playButton = frameDocument?.getElementById("tic80-play");
+      needsPlay = Boolean(playButton?.offsetParent);
+      const target = needsPlay ? playButton : frameDocument?.getElementById("canvas");
+      target?.focus();
     } catch (_error) {
       // The iframe still receives focus when hosted from another origin.
     }
 
-    gameStatus.textContent = "Focused — press Z to start";
+    gameStatus.textContent = needsPlay ? "Ready — click play" : "Focused — press Z to start";
   }
 
   async function toggleFullscreen() {
@@ -137,7 +142,7 @@
         focusGame();
       }
     } catch (_error) {
-      gameStatus.textContent = "Fullscreen is not available in this browser";
+      gameStatus.textContent = "Fullscreen unavailable.";
     }
   }
 

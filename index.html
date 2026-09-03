@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#1a1c30">
     <meta
       name="description"
-      content="Play GODELBOW, a tiny basketball platformer made with TIC-80, and read the field manual."
+      content="Play GODELBOW online or download the Windows game."
     >
-    <title>GODELBOW — Play</title>
+    <title>GODELBOW</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="site.css">
     <script src="site.js" defer></script>
@@ -18,7 +18,6 @@
 
     <header class="hero page-width">
       <div>
-        <p class="eyebrow">TIC-80 CARTRIDGE</p>
         <h1>GODELBOW</h1>
       </div>
       <p class="hero__line">
@@ -36,10 +35,6 @@
             <strong id="game-status" aria-live="polite">Loading cartridge…</strong>
           </div>
           <h2 id="game-heading">The ball is the weapon</h2>
-          <div class="score-strip__room" aria-label="Twenty-four playable rooms">
-            <span class="score-strip__label">Rooms</span>
-            <strong>24</strong>
-          </div>
         </div>
 
         <div class="game-stage" id="game-stage">
@@ -64,6 +59,7 @@
             <button class="utility-button utility-button--accent" id="fullscreen-game" type="button">
               Fullscreen
             </button>
+            <a class="utility-button utility-button--download" href="downloads/godelbow.exe" download="godelbow.exe">Download EXE</a>
           </div>
         </div>
         <p class="play-note">Click the play icon, then press <kbd>Z</kbd> to enter Level 1.</p>
@@ -74,19 +70,16 @@
       <section class="manual" id="manual" aria-labelledby="manual-heading">
         <div class="manual__inner page-width">
           <header class="manual__header">
-            <p class="eyebrow eyebrow--ink">Player field document // Revision 24</p>
             <h2 id="manual-heading">Retro game manual</h2>
-            <p>Everything the court refuses to explain.</p>
           </header>
 
           <article class="markdown-body" id="manual-content" aria-live="polite" aria-busy="true">
-            <p class="manual-state">Loading the field manual…</p>
+            <p class="manual-state">Loading manual…</p>
           </article>
 
           <noscript>
             <p class="manual-state">
-              JavaScript is required to display the manual here.
-              <a href="RETRO_MANUAL.md">Open the Markdown source.</a>
+              <a href="RETRO_MANUAL.md">Read manual</a>
             </p>
           </noscript>
         </div>
@@ -94,7 +87,7 @@
     </main>
 
     <footer>
-      <div class="page-width">GODELBOW // Built with TIC-80</div>
+      <div class="page-width"><a href="https://tic80.com/play?cart=4812">GODELBOW</a> // Built with TIC-80</div>
     </footer>
   </body>
 </html>

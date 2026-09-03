@@ -1,10 +1,22 @@
-# GODELBOW — Retro Game Manual
+## Pocket reference
 
-> Player-facing copy for the current 24-room TIC-80 test cart. The sheet uses
-> the keyboard labels shown by the game; TIC-80 gamepad equivalents are listed
-> in the control panel.
+```text
+┌──────────────────────────────────────────────────────────────┐
+│ GODELBOW // QUICK CARD                                       │
+├──────────────────────────────┬───────────────────────────────┤
+│ <- ->   MOVE / FACE          │ NO BALL + X   ELBOW           │
+│ Z       JUMP                 │ BALL + TAP X  QUICK 45°       │
+│ X       ACTION               │ HOLD X + <- -> STRAIGHT       │
+│                              │ HOLD X + ^   HIGH ARC         │
+│ WALK INTO BALL = PICK UP     │ AIR + DUNK PROMPT + X = DUNK  │
+├──────────────────────────────┴───────────────────────────────┤
+│ FLYING BALL + FACE + X = RETURN                              │
+│ BOMB TOUCHES FLOOR = 2-SECOND FUSE                           │
+│ POSSESSION -> LINE -> TARGET -> REBOUND -> POSSESSION        │
+└──────────────────────────────────────────────────────────────┘
+```
 
-## SIDE A — THE SACRED ART OF THE ELBOW
+## SIDE A
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -45,7 +57,7 @@
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-## SIDE B — RULES OF THE COURT
+## SIDE B
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────┐
@@ -95,22 +107,4 @@
 │                                                                          │
 │                CATCH IT. THROW IT. KNOCK IT BACK. AGAIN.                 │
 └──────────────────────────────────────────────────────────────────────────┘
-```
-
-## Pocket reference
-
-```text
-┌──────────────────────────────────────────────────────────────┐
-│ GODELBOW // QUICK CARD                                       │
-├──────────────────────────────┬───────────────────────────────┤
-│ <- ->   MOVE / FACE          │ NO BALL + X   ELBOW           │
-│ Z       JUMP                 │ BALL + TAP X  QUICK 45°       │
-│ X       ACTION               │ HOLD X + <- -> STRAIGHT       │
-│                              │ HOLD X + ^   HIGH ARC         │
-│ WALK INTO BALL = PICK UP     │ AIR + DUNK PROMPT + X = DUNK  │
-├──────────────────────────────┴───────────────────────────────┤
-│ FLYING BALL + FACE + X = RETURN                              │
-│ BOMB TOUCHES FLOOR = 2-SECOND FUSE                           │
-│ POSSESSION -> LINE -> TARGET -> REBOUND -> POSSESSION        │
-└──────────────────────────────────────────────────────────────┘
 ```
