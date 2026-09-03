@@ -262,6 +262,161 @@ kbd {
   color: var(--night);
 }
 
+/* The portrait controller is part of the fullscreen stage, below the canvas. */
+[hidden] { display: none !important; }
+
+.touch-portrait .game-stage {
+  aspect-ratio: auto;
+  background: var(--night);
+}
+
+.touch-portrait .game-stage iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 240 / 136;
+}
+
+.touch-controls {
+  padding: 12px 8px max(14px, env(safe-area-inset-bottom));
+  border-top: 3px solid var(--violet);
+  background: var(--night);
+  font-family: var(--mono);
+}
+
+.touch-controls__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.touch-controls__top p, .touch-hint {
+  margin: 0;
+  color: var(--paper-shadow);
+  font-size: 0.65rem;
+  line-height: 1.5;
+}
+
+.touch-controls__pad {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+.touch-controls__pad, .touch-system {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.touch-dpad {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template: repeat(3, clamp(44px, 12vw, 56px)) / repeat(3, clamp(44px, 12vw, 56px));
+}
+
+.touch-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 2px solid var(--paper-shadow);
+  border-radius: 0;
+  background: var(--court-blue);
+  color: var(--paper);
+  cursor: pointer;
+  font-family: var(--mono);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-key:disabled { opacity: 0.4; cursor: default; }
+.touch-key.is-pressed { background: var(--paper); color: var(--night); border-color: var(--gold); }
+.touch-key:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.touch-key--up { grid-area: 1 / 2; }
+.touch-key--left { grid-area: 2 / 1; }
+.touch-key--right { grid-area: 2 / 3; }
+.touch-key--down { grid-area: 3 / 2; }
+.touch-dpad .touch-key { font-size: 1.5rem; }
+
+.touch-actions {
+  --action-size: clamp(56px, 17vw, 76px);
+  /* A 30-degree center line, with 14px between the circular edges. */
+  --action-offset-x: calc((var(--action-size) + 14px) * 0.8660254);
+  --action-offset-y: calc((var(--action-size) + 14px) * 0.5);
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--action-size) + var(--action-offset-x));
+  height: calc(var(--action-size) + var(--action-offset-y));
+}
+
+.touch-key--action {
+  position: absolute;
+  width: var(--action-size);
+  height: var(--action-size);
+  border-color: var(--gold);
+  border-radius: 50%;
+  background: var(--violet);
+}
+
+.touch-key--jump { top: 0; right: 0; }
+.touch-key--throw { bottom: 0; left: 0; background: var(--gold); color: var(--night); }
+.touch-system {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+.touch-key--utility {
+  width: 72px;
+  min-height: 44px;
+  border-radius: 999px;
+  background: var(--night);
+}
+.touch-key b { font-size: 1.5rem; line-height: 1.15; }
+.touch-key span { font-size: 0.58rem; }
+.touch-key--utility b { font-size: 0.9rem; }
+.touch-hint { margin-top: 14px; text-align: center; }
+.touch-controls .touch-exit { display: none; }
+.touch-portrait .play-note, .touch-portrait .controls { display: none; }
+
+.touch-portrait .game-stage:fullscreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  overflow-y: auto;
+}
+
+.touch-portrait .game-stage:fullscreen iframe {
+  flex: 0 0 auto;
+  width: min(100%, calc((100dvh - 352px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 240 / 136));
+  height: auto;
+}
+
+.touch-portrait .game-stage:fullscreen .touch-controls {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.touch-portrait .game-stage:fullscreen .touch-exit {
+  display: inline-flex;
+  min-height: 44px;
+  padding: 8px;
+  font-size: 0.65rem;
+}
+
 .utility-button--download {
   border-color: var(--orange);
   background: var(--orange);

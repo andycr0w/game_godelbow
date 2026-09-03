@@ -39,18 +39,26 @@
             </div>
         </div>
 
+        <script src="input-bridge.js"></script>
         <script type="module">
-        import startTic80 from './tic80.js'
 
         const initialize = () => {
             const canvasSelector = '#canvas'
             const canvasElement = document.querySelector(canvasSelector)
             const playElement = document.getElementById('tic80-play')
+            const input = window.godelbowInput
+            const fail = () => {
+                input.setState('error')
+                playElement.style.display = 'flex'
+                playElement.textContent = 'Game could not load. Reload the page to retry.'
+                playElement.setAttribute('role', 'alert')
+            }
 
             const options = {
                 canvas: canvasElement,
 
                 arguments: ['cart.tic'],
+                onAbort: fail,
 
                 saveAs (blob, filename) {
                     const url = URL.createObjectURL(blob)
@@ -92,12 +100,19 @@
             })
 
             let started = false
-            const startGame = () => {
+            const startGame = async () => {
                 if (started) return
                 started = true
+                input.setState('loading')
                 playElement.style.display = 'none'
                 canvasElement.focus()
-                startTic80(options)
+                try {
+                    const { default: startTic80 } = await import('./tic80.js')
+                    await startTic80(options)
+                    if (input.state !== 'error') input.setState('ready')
+                } catch (_error) {
+                    fail()
+                }
             }
 
             playElement.addEventListener('click', startGame)
