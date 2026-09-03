@@ -26,6 +26,14 @@
     let quote = [];
     let code = [];
     let inCode = false;
+    let inSection = false;
+
+    const closeSection = () => {
+      if (inSection) {
+        html.push("</section>");
+        inSection = false;
+      }
+    };
 
     const flushParagraph = () => {
       if (paragraph.length > 0) {
@@ -66,6 +74,11 @@
         flushParagraph();
         flushQuote();
         const level = heading[1].length;
+        if (level <= 2) closeSection();
+        if (level === 2) {
+          html.push('<section class="manual-section">');
+          inSection = true;
+        }
         html.push(`<h${level}>${renderInline(heading[2])}</h${level}>`);
         continue;
       }
@@ -91,6 +104,7 @@
     }
     flushParagraph();
     flushQuote();
+    closeSection();
 
     return html.join("\n");
   }

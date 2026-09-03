@@ -367,11 +367,19 @@ kbd {
   font-size: clamp(2.3rem, 6vw, 4.5rem);
 }
 
+.manual-section {
+  display: flow-root;
+  width: max-content;
+  max-width: 100%;
+  margin: 72px auto 0;
+}
+
 .markdown-body h2 {
-  margin: 72px 0 18px;
+  margin: 0 0 18px;
   border-left: 10px solid var(--orange);
   padding-left: 14px;
   font-size: clamp(1.65rem, 4vw, 2.8rem);
+  text-align: left;
 }
 
 .markdown-body p,
@@ -410,6 +418,10 @@ kbd {
 .markdown-body pre:focus-visible {
   outline: 4px solid var(--orange);
   outline-offset: 4px;
+}
+
+.manual-section > pre {
+  margin-inline: 0;
 }
 
 .markdown-body pre code {
@@ -513,7 +525,7 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .markdown-body h2 {
+  .manual-section {
     margin-top: 54px;
   }
 }

@@ -71,6 +71,20 @@ test('manual has three intact code cards in the requested order', async () => {
   assert.equal(content.attributes['aria-busy'], 'false');
   assert.equal((content.innerHTML.match(/<pre /g) || []).length, 3);
   assert.match(content.innerHTML, /&lt;- -&gt;/);
+  const groups = [...content.innerHTML.matchAll(/<section class="manual-section">\s*<h2>([^<]+)<\/h2>\s*<pre tabindex="0"><code>([\s\S]*?)<\/code><\/pre>\s*<\/section>/g)];
+  assert.deepEqual(groups.map((group) => group[1]), ['Pocket reference', 'SIDE A', 'SIDE B']);
+  const escape = (text) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+  const cards = [...markdown.replace(/\r\n?/g, '\n').matchAll(/```text\n([\s\S]*?)\n```/g)];
+  assert.deepEqual(groups.map((group) => group[2]), cards.map((card) => escape(card[1])));
+});
+
+test('manual groups close at the next section, top-level heading, and end of input', async () => {
+  const { elements } = await harness({ source: '# Intro\n\n## First\n\nParagraph.\n\n### Detail\n\n> Quote\n\n## Second\n\n```text\nCard\n```\n\n# Appendix\n\nOutside.' });
+  const rendered = elements.get('manual-content').innerHTML;
+  assert.equal((rendered.match(/<section /g) || []).length, 2);
+  assert.equal((rendered.match(/<\/section>/g) || []).length, 2);
+  assert.match(rendered, /<h3>Detail<\/h3>\s*<blockquote><p>Quote<\/p><\/blockquote>\s*<\/section>\s*<section/);
+  assert.match(rendered, /<\/pre>\s*<\/section>\s*<h1>Appendix<\/h1>\s*<p>Outside\.<\/p>$/);
 });
 
 test('footer retains the credit and links to the TIC-80 game page', () => {
@@ -83,6 +97,7 @@ test('Markdown escapes HTML and handles an unclosed code fence', async () => {
   assert.match(rendered, /&lt;script&gt;/);
   assert.doesNotMatch(rendered, /<script>/);
   assert.match(rendered, /<\/code><\/pre>/);
+  assert.match(rendered, /<\/code><\/pre>\s*<\/section>$/);
 });
 
 test('network and HTTP failures leave a usable manual link', async () => {
