@@ -31,7 +31,7 @@
 │  [QUICK SHOT]  [YOU+o] -- TAP X --> 45 DEGREE THROW --> [RIM]            │
 │                                                                          │
 │  [READY AIM]   HOLD X, THEN PRESS <- / -> / ^ AND RELEASE X              │
-│                THE BOTTOM LINE ONLY SHOWS THE ROOM OBJECTIVE              │
+│                THE BOTTOM LINE ONLY SHOWS THE ROOM OBJECTIVE             │
 │                                                                          │
 │  [STRAIGHT]    HOLD X ... <- OR -> ... RELEASE X                         │
 │  [HIGH ARC]    HOLD X ... ^ .......... RELEASE X                         │
