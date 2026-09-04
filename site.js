@@ -147,31 +147,83 @@
     gameStatus.textContent = needsPlay ? "Ready — click play" : "Focused — press Z to start";
   }
 
+  function isPortraitTouch() {
+    return document.documentElement.classList.contains("touch-portrait");
+  }
+
+  function isFallbackFullscreen() {
+    return gameStage.classList.contains("is-handheld");
+  }
+
+  function setHandheldPresentation(active) {
+    document.documentElement.classList.toggle("handheld-open", active && isFallbackFullscreen());
+    try {
+      gameFrame.contentWindow?.godelbowInput?.setHandheldMode(active);
+    } catch (_error) {
+      // A same-origin frame is expected; the page still remains usable otherwise.
+    }
+  }
+
+  function enterFallbackFullscreen() {
+    gameStage.classList.add("is-handheld");
+    setHandheldPresentation(true);
+    updateFullscreenLabel();
+  }
+
+  function exitFallbackFullscreen() {
+    gameStage.classList.remove("is-handheld");
+    document.documentElement.classList.remove("handheld-open");
+  }
+
+  async function exitHandheldFullscreen() {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+    } else {
+      exitFallbackFullscreen();
+      setHandheldPresentation(false);
+      updateFullscreenLabel();
+    }
+  }
+
   async function toggleFullscreen() {
     try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
+      if (document.fullscreenElement || isFallbackFullscreen()) {
+        await exitHandheldFullscreen();
       } else {
         await gameStage.requestFullscreen();
         focusGame();
       }
     } catch (_error) {
-      gameStatus.textContent = "Fullscreen unavailable.";
+      if (isPortraitTouch()) {
+        enterFallbackFullscreen();
+        focusGame();
+      } else {
+        gameStatus.textContent = "Fullscreen unavailable.";
+      }
     }
   }
 
   function updateFullscreenLabel() {
-    const active = document.fullscreenElement === gameStage;
+    const nativeActive = document.fullscreenElement === gameStage;
+    const active = nativeActive || isFallbackFullscreen();
+    if (!nativeActive && document.fullscreenElement) exitFallbackFullscreen();
+    setHandheldPresentation(isPortraitTouch() && active);
     fullscreenButton.textContent = active ? "Exit fullscreen" : "Fullscreen";
     fullscreenButton.setAttribute("aria-pressed", String(active));
   }
 
   gameFrame.addEventListener("load", () => {
     gameStatus.textContent = "Ready — click play";
+    updateFullscreenLabel();
   });
   focusButton.addEventListener("click", focusGame);
   fullscreenButton.addEventListener("click", toggleFullscreen);
   document.addEventListener("fullscreenchange", updateFullscreenLabel);
+  document.addEventListener("godelbow-exit-fullscreen", () => {
+    exitHandheldFullscreen().catch(() => {
+      gameStatus.textContent = "Could not exit fullscreen. Use your browser's back control.";
+    });
+  });
 
   updateFullscreenLabel();
   loadManual();

@@ -22,6 +22,22 @@
                 position: absolute; top: 0; left:0; width: 100%; height: 100%; outline-style: none;
             }
 
+            /* TIC-80 renders a 240x136 game inside its integer-scaled 256x144
+               framebuffer. Handheld mode enlarges and clips that game area. */
+            html.handheld-mode, html.handheld-mode body {
+                overflow: hidden;
+            }
+
+            html.handheld-mode .tic80-container {
+                overflow: hidden;
+            }
+
+            html.handheld-mode .tic80-canvas {
+                transform: scale(calc(100vw / 240px));
+                transform-origin: center;
+                image-rendering: pixelated;
+            }
+
             .tic80-play {
                 position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background: #1a1c2c; color: #fff; display: flex; justify-content: center; align-items: center; image-rendering: pixelated; cursor: pointer;
             }

@@ -58,6 +58,9 @@
       state = next;
       notify("godelbow-input-state");
     },
+    setHandheldMode(active) {
+      document.documentElement.classList.toggle("handheld-mode", Boolean(active));
+    },
     setKey, reset,
   };
   window.addEventListener("blur", reset);

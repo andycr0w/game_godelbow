@@ -388,33 +388,88 @@ kbd {
 .touch-controls .touch-exit { display: none; }
 .touch-portrait .play-note, .touch-portrait .controls { display: none; }
 
-.touch-portrait .game-stage:fullscreen {
+.touch-portrait .game-stage:fullscreen,
+.touch-portrait .game-stage.is-handheld {
   display: flex;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  width: 100vw;
   height: 100vh;
   height: 100dvh;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
-  overflow-y: auto;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overflow: hidden;
+  border: 0;
+  background: var(--night);
+  box-shadow: none;
 }
 
-.touch-portrait .game-stage:fullscreen iframe {
+.touch-portrait .game-stage:fullscreen iframe,
+.touch-portrait .game-stage.is-handheld iframe {
   flex: 0 0 auto;
-  width: min(100%, calc((100dvh - 352px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 240 / 136));
+  width: min(100%, calc((100dvh - 238px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 240 / 136));
   height: auto;
+  aspect-ratio: 240 / 136;
 }
 
-.touch-portrait .game-stage:fullscreen .touch-controls {
-  flex: 0 0 auto;
+.touch-portrait .game-stage:fullscreen .touch-controls,
+.touch-portrait .game-stage.is-handheld .touch-controls {
+  display: flex;
+  position: relative;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
+  padding: 12px 8px;
+  border: 0;
+}
+
+.touch-portrait .game-stage:fullscreen .touch-controls__top,
+.touch-portrait .game-stage.is-handheld .touch-controls__top {
+  display: contents;
+}
+
+.touch-portrait .game-stage:fullscreen #touch-status,
+.touch-portrait .game-stage:fullscreen .touch-hint,
+.touch-portrait .game-stage.is-handheld #touch-status,
+.touch-portrait .game-stage.is-handheld .touch-hint {
+  display: none;
+}
+
+.touch-portrait .game-stage:fullscreen .touch-exit,
+.touch-portrait .game-stage.is-handheld .touch-exit {
+  display: inline-grid;
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: max(8px, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  margin: 0;
+  border: 2px solid var(--paper-shadow);
+  border-radius: 50%;
+  padding: 0 0 3px;
+  place-items: center;
+  background: var(--night);
+  color: var(--paper);
+  font: 400 1.65rem/1 var(--utility);
+  cursor: pointer;
+}
+
+.touch-portrait .game-stage:fullscreen .touch-controls__pad,
+.touch-portrait .game-stage.is-handheld .touch-controls__pad {
   width: 100%;
 }
 
-.touch-portrait .game-stage:fullscreen .touch-exit {
-  display: inline-flex;
-  min-height: 44px;
-  padding: 8px;
-  font-size: 0.65rem;
+html.handheld-open,
+html.handheld-open body {
+  height: 100%;
+  overflow: hidden;
 }
 
 .utility-button--download {

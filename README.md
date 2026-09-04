@@ -24,6 +24,10 @@ jump and **X** to act. Hold X, choose a direction, then release X to throw.
 The controls support multiple fingers, including movement, jumping and X
 together. **A** opens room selection; use the D-pad and Z to choose a room.
 Portrait fullscreen keeps the controller and an exit button visible.
+In portrait fullscreen the 240x136 play area fills the available width and the
+page becomes a handheld view containing only the game screen and controls. If
+the browser does not support element fullscreen, the same view opens inside the
+browser viewport and its × button returns to the page.
 The right-hand buttons are arranged diagonally, with X below-left of Z.
 S and A sit in the center below the main controls, in Select / Start positions;
 their game functions remain hitboxes and room selection.

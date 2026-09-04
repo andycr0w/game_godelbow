@@ -11,13 +11,22 @@ const html = read('index.html');
 const markdown = read('RETRO_MANUAL.md');
 
 async function harness({ source = markdown, failure, status = 200 } = {}) {
+  const makeClassList = () => {
+    const values = new Set();
+    return {
+      add: (...names) => names.forEach(name => values.add(name)),
+      remove: (...names) => names.forEach(name => values.delete(name)),
+      contains: name => values.has(name),
+      toggle(name, force) { const next = force ?? !values.has(name); if (next) values.add(name); else values.delete(name); return next; },
+    };
+  };
   const elements = new Map([...html.matchAll(/id="([^"]+)"/g)].map((match) => [match[1], {
-    attributes: {}, events: {},
+    attributes: {}, events: {}, classList: makeClassList(),
     setAttribute(name, value) { this.attributes[name] = value; },
     addEventListener(name, callback) { this.events[name] = callback; },
   }]));
   const document = {
-    events: {}, fullscreenElement: null,
+    events: {}, fullscreenElement: null, documentElement: { classList: makeClassList() },
     getElementById(id) { assert.ok(elements.has(id), `Missing DOM id: ${id}`); return elements.get(id); },
     addEventListener(name, callback) { this.events[name] = callback; },
     async exitFullscreen() { this.fullscreenElement = null; this.events.fullscreenchange(); },
@@ -30,7 +39,10 @@ async function harness({ source = markdown, failure, status = 200 } = {}) {
   const play = { offsetParent: {}, focus() { this.focused = true; } };
   const canvas = { focus() { this.focused = true; } };
   const frame = elements.get('game-frame');
-  frame.contentWindow = { focus() { this.focused = true; } };
+  frame.contentWindow = {
+    focus() { this.focused = true; },
+    godelbowInput: { setHandheldMode(active) { this.handheld = active; } },
+  };
   frame.contentDocument = { getElementById: (id) => id === 'tic80-play' ? play : canvas };
   new vm.Script(read('site.js')).runInNewContext({
     document,
@@ -140,6 +152,21 @@ test('fullscreen entry, exit and rejection retain working status feedback', asyn
   stage.requestFullscreen = async () => { throw new Error('denied'); };
   await button.events.click();
   assert.equal(elements.get('game-status').textContent, 'Fullscreen unavailable.');
+});
+
+test('portrait touch falls back to a reversible in-page handheld when native fullscreen fails', async () => {
+  const { elements, document, stage, frame } = await harness();
+  document.documentElement.classList.add('touch-portrait');
+  stage.requestFullscreen = async () => { throw new Error('denied'); };
+  await elements.get('fullscreen-game').events.click();
+  assert.equal(stage.classList.contains('is-handheld'), true);
+  assert.equal(document.documentElement.classList.contains('handheld-open'), true);
+  assert.equal(frame.contentWindow.godelbowInput.handheld, true);
+  assert.equal(elements.get('fullscreen-game').attributes['aria-pressed'], 'true');
+  await elements.get('fullscreen-game').events.click();
+  assert.equal(stage.classList.contains('is-handheld'), false);
+  assert.equal(document.documentElement.classList.contains('handheld-open'), false);
+  assert.equal(frame.contentWindow.godelbowInput.handheld, false);
 });
 
 test('download points to the original Windows executable', () => {

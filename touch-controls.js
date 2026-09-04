@@ -76,6 +76,13 @@
     enabled = next;
     controls.hidden = !enabled;
     document.documentElement.classList.toggle("touch-portrait", enabled);
+    bridge?.setHandheldMode(
+      enabled && (document.fullscreenElement === document.getElementById("game-stage") ||
+        document.getElementById("game-stage").classList.contains("is-handheld")),
+    );
+    if (!enabled && document.documentElement.classList.contains("handheld-open")) {
+      document.dispatchEvent(new Event("godelbow-exit-fullscreen"));
+    }
     updateStatus();
   }
   function bindFrame() {
@@ -85,6 +92,10 @@
     try {
       frameWindow = frame.contentWindow;
       bridge = frameWindow.godelbowInput;
+      bridge?.setHandheldMode(
+        enabled && (document.fullscreenElement === document.getElementById("game-stage") ||
+          document.getElementById("game-stage").classList.contains("is-handheld")),
+      );
       frameWindow.addEventListener("godelbow-input-state", updateStatus);
       frameWindow.addEventListener("godelbow-input-reset", clear);
     } catch (_error) {
@@ -145,18 +156,33 @@
     if (!button) return;
     for (const key of [" ", "Enter"]) input.set(`keyboard:${button.dataset.gameKey}:${key}`, null);
   });
-  frame.addEventListener("load", bindFrame);
+  frame.addEventListener("load", () => {
+    if (document.documentElement.classList.contains("handheld-open")) {
+      document.dispatchEvent(new Event("godelbow-exit-fullscreen"));
+    }
+    bindFrame();
+  });
   window.addEventListener("blur", reset);
-  window.addEventListener("pagehide", reset);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) reset(); });
+  window.addEventListener("pagehide", () => {
+    reset();
+    if (document.documentElement.classList.contains("handheld-open")) {
+      document.dispatchEvent(new Event("godelbow-exit-fullscreen"));
+    }
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) return;
+    reset();
+    if (document.documentElement.classList.contains("handheld-open")) {
+      document.dispatchEvent(new Event("godelbow-exit-fullscreen"));
+    }
+  });
   document.addEventListener("fullscreenchange", reset);
   portrait.addEventListener("change", updateMode);
   coarse.addEventListener("change", updateMode);
   document.getElementById("focus-game").addEventListener("click", () => { if (enabled) updateStatus(); });
   document.getElementById("touch-exit").addEventListener("click", async () => {
     reset();
-    try { await document.exitFullscreen(); }
-    catch (_error) { status.textContent = "Could not exit fullscreen. Use your browser's back control."; }
+    document.dispatchEvent(new Event("godelbow-exit-fullscreen"));
   });
   bindFrame();
   updateMode();

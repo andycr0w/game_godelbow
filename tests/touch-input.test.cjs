@@ -49,6 +49,7 @@ function bridgeHarness() {
   const events = [];
   const window = new EventTarget();
   const document = new EventTarget();
+  document.documentElement = { classList: { toggle(name, active) { this.name = name; this.active = active; } } };
   let time = 0;
   let serial = 0;
   const timers = new Map();
@@ -113,4 +114,15 @@ test('bridge releases held buttons on blur, page hide, hidden document and runti
       ['keydown', 'KeyX'], ['keydown', 'ArrowLeft'], ['keyup', 'KeyX'], ['keyup', 'ArrowLeft'],
     ]);
   }
+});
+
+test('bridge toggles iframe handheld presentation without changing input state', () => {
+  const { bridge, document } = bridgeHarness();
+  bridge.setState('ready');
+  bridge.setHandheldMode(true);
+  assert.equal(document.documentElement.classList.name, 'handheld-mode');
+  assert.equal(document.documentElement.classList.active, true);
+  assert.equal(bridge.state, 'ready');
+  bridge.setHandheldMode(false);
+  assert.equal(document.documentElement.classList.active, false);
 });
